@@ -17,20 +17,7 @@ def add_resource():
     adds resources with POST request
     '''
     if request.method == 'POST':
-        if request.json:
-            global r
-            r = Resource()
-            # r.rid = request.json['rid'] # Now automatically updated
-            r.title = request.json['title']
-            r.link = str(request.json['link'])
-            # Insert Tags to Tags Object
-            r.tags = []
-            for item in request.json['tags']:
-                t = Tags()
-                t.tag_name = item['tag_name']
-                r.tags.append(t)
-            r.description = request.json['description']
-            r.save()
+        request_json()
     return Response(json.dumps(r, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
@@ -45,7 +32,8 @@ def get_resources():
     return Response(json.dumps(result, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
-@app.route('/api/resource/getresources/<int:resource_id>/')
+@app.route('/api/resource/updateresources/<int:resource_id>/', methods=['PUT',
+                                                                     'DELETE'])
 def update_or_delete_resource(resource_id):
     '''
     Depending on the request,
@@ -57,9 +45,15 @@ def update_or_delete_resource(resource_id):
     allResources = Resource.objects.filter(rid=resource_id)
     if allResources: # Resource is available in DB
         if request.method == 'PUT': # Update the resource
-            pass
+            #request_json_and_save(update=True)
+            #request_json(update=True)
+            #global r
+            #allResources.update(**json.loads(str(request.json)))
+            allResources.delete()
+            request_json(rid=resource_id)
+            #r.save(**request.json)
         if request.method == 'DELETE': # Delete the resource
-            pass
+            allResources.delete()
         create_dict(allResources)
     else:
         result = [{'Error': 'Resource not found'}]
@@ -103,3 +97,20 @@ def create_dict(allResources):
         d['description'] = item.description
         result.append(d)
     return result
+
+def request_json(**kwargs):
+    if request.json:
+        global r
+        r = Resource()
+        for k, v in kwargs.iteritems():
+            r.rid = v # Now automatically updated
+        r.title = request.json['title']
+        r.link = str(request.json['link'])
+        # Insert Tags to Tags Object
+        r.tags = []
+        for item in request.json['tags']:
+            t = Tags()
+            t.tag_name = item['tag_name']
+            r.tags.append(t)
+        r.description = request.json['description']
+        r.save(upsert=True)
