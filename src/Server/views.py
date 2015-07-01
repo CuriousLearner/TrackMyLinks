@@ -42,8 +42,7 @@ def update_or_delete_resource(resource_id):
     or DELETE: Delete the resource
     '''
     global result
-    allResources = Resource.objects.get(rid=resource_id) # To get single object
-    # and not a single object within list for objects
+    allResources = Resource.objects.filter(rid=resource_id)
     if allResources: # Resource is available in DB
         if request.method == 'PUT': # Update the resource
             #request_json_and_save(update=True)
