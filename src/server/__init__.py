@@ -1,9 +1,11 @@
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
 from pymongo import read_preferences
+from flask.ext.cors import CORS
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 db = MongoEngine()
 
