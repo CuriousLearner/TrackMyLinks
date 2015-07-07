@@ -1,7 +1,6 @@
 app.controller('addResourceDetails',function($scope, $http) {
   window.x = $scope;
   $scope.resource = {};
-  $scope.message = {};
   $scope.submit = function() {
     $http({method: 'POST', 
       url: 'http://localhost:5000/api/resource/addresources/', 
@@ -9,10 +8,14 @@ app.controller('addResourceDetails',function($scope, $http) {
       headers: {'Access-Control-Allow-Origin': '*'}
       }).success(function(data){
         $scope.message = data.Success;
+        $scope.getData();
       }).
       error(function(data){
         console.log("Unable to fetch resources");
         $scope.message = data.Error;
       });
     };
+  $scope.reset = function() {
+    $scope.resource = {};
+  }
 });
