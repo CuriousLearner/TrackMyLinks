@@ -18,7 +18,7 @@ def add_resource():
     '''
     if request.method == 'POST':
         request_json()
-    return Response(json.dumps(r, cls=PythonJSONEncoder), status=200, 
+    return Response(json.dumps({"Success": "Resource Added Successfully"}, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
 @app.route('/api/resource/getresources/')
