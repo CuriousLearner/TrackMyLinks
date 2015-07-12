@@ -2,6 +2,7 @@ from server import app, db
 from flask import (render_template, jsonify, request, redirect, url_for, 
                    Response, make_response)
 from models import Resource, Tags
+from operator import itemgetter
 import json
 
 result = [] # Global result list to return result as JSON
@@ -18,17 +19,23 @@ def add_resource():
     '''
     if request.method == 'POST':
         request_json()
-    return Response(json.dumps({"Success": "Resource Added Successfully"}, cls=PythonJSONEncoder), status=200, 
+    return Response(json.dumps({"Message": "Resource Added Successfully"}, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
 @app.route('/api/resource/getresources/')
 def get_resources():
     '''
     returns all the resources with GET request
+    :arg:resource_id: GET request with that resource id
     '''
     global result
-    allResources = Resource.objects.all()
-    create_dict(allResources)
+    resource_id = request.args.get('resource_id')
+    if resource_id:
+        result = Resource.objects.get(rid=resource_id)
+    else:
+        allResources = Resource.objects.all()
+        create_dict(allResources)
+        result = sorted(result, key=itemgetter('rid'))
     return Response(json.dumps(result, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
@@ -47,11 +54,12 @@ def update_or_delete_resource(resource_id):
         if request.method == 'PUT': # Update the resource
             modified_json = create_dict_for_update(request.json)
             allResources.update(**modified_json)
+            result = [{"Message" : "Resource Updated Successfully"}]
         if request.method == 'DELETE': # Delete the resource
             allResources.delete()
-        result = [{"Success" : "Resource Updated Successfully"}]
+            result = [{"Message" : "Resource Deleted Successfully"}]
     else:
-        result = [{"Error": "Resource not found"}]
+        result = [{"Message": "Resource not found"}]
     return Response(json.dumps(result, cls=PythonJSONEncoder), status=200, 
                     content_type="application/json")
 
