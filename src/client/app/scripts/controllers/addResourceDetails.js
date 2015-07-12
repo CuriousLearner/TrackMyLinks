@@ -7,7 +7,7 @@ app.controller('addResourceDetails',function($scope, $http) {
       data: $scope.resource, 
       headers: {'Access-Control-Allow-Origin': '*'}
       }).success(function(data){
-        $scope.message = data.Success;
+        $scope.message = data.Message;
         $scope.getData();
       }).
       error(function(data){

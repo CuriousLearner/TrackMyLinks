@@ -1,0 +1,34 @@
+<div> 
+  <h2>Modify Resource with Resource ID: {{ resourceId }}</h2>
+  <form class="form-horizontal" name="modifyResourceFrom" novalidate>
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" class="form-control" ng-model="resource.title" placeholder="Enter Title for your Resource" name="rtitle" required />
+      <span class="error" ng-hide="message || modifyResourceFrom.rtitle.$pristine" ng-show="modifyResourceFrom.rtitle.$dirty && modifyResourceFrom.rtitle.$invalid">
+        <span ng-show="modifyResourceFrom.rtitle.$error.required">What is the title of Resource?</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label>Link</label>
+      <input type="text" class="form-control" name="rlink" ng-model="resource.link" placeholder="Link to your Resource" required />
+      <span class="error" ng-hide="message || modifyResourceFrom.rlink.$pristine" ng-show="modifyResourceFrom.rlink.$dirty && modifyResourceFrom.rlink.$invalid">
+        <span ng-show="modifyResourceFrom.rlink.$error.required">What is the link to your Resource?</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" class="form-control" name="rdescription" ng-model="resource.description" placeholder="Description of your Resource" required />
+      <span class="error" ng-hide="message || modifyResourceFrom.rdescription.$pristine" ng-show="modifyResourceFrom.rdescription.$dirty && modifyResourceFrom.rdescription.$invalid">
+        <span ng-show="modifyResourceFrom.rdescription.$error.required">Please describe your resource. This would help you remember later.</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label>Tags </label><small>  Press Enter to make a tag.</small>
+      <tags-input ng-model="resource.tags" key-property="tag_name" display-property="tag_name"></tags-input>
+    </div>
+    <div class="form-group">
+      <button ng-disabled="modifyResourceFrom.$invalid" class= "btn btn-default" type="button" ng-click="modify();reset();modifyResourceFrom.$setPristine();">Modify Resource</button>
+      <button ng-disabled="modifyResourceFrom.$invalid" class= "btn btn-default" type="button" ng-click="delete();reset();modifyResourceFrom.$setPristine();">Delete Resource</button>
+    </div>
+  </form>
+</div>
