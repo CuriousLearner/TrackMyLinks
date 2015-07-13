@@ -34,48 +34,50 @@
     <div ng-include="'views/nav.html'" id="main-menu"></div>
 
     <div class="container">
-
-      <div ng-view ng-init="fetchResourceWithID()"></div>
-
       <div ng-hide="resourceId">
         <div ng-controller="getResourceDetails as getResources" ng-init="getData()">
-          <h2 class="text-center">List of Latest Resources</h2>
-          <div id="results" ng-show="resources != []">
-            <table class="table table-striped table-hover">
-              <thead>
-                <th ng-click="reverseSort = !reverseSort">ID
-                  <span class="glyphicon glyphicon-chevron-up" ng-show="!reverseSort"></span>
-                  <span class="glyphicon glyphicon-chevron-down" ng-show="reverseSort"></span>
-                </th>
-                <th>Title
-                  <input type="text" ng-model="searchText.title" />
-                </th>
-                <th>Link
-                  <input type="text" ng-model="searchText.link" />
-                </th>
-                <th>Description</th>
-                <th>Tags
-                  <input type="text" ng-model="searchText.tags.tag_name" />
-                </th>      
-              </thead>
-              <tbody>
-                <tr ng-repeat="resource in resources | orderBy:rid:reverseSort | filter:searchText:strict">
-                  <td><a ng-bind="resource.rid" href="/#/resource/{{ resource.rid }}" /></td>
-                  <td ng-bind="resource.title"></td>
-                  <td ng-bind="resource.link"></td>
-                  <td ng-bind="resource.description"></td>
-                  <td>
-                    <span ng-repeat="tag in resource.tags">
-                      {{ tag.tag_name }}
-                      <span ng-hide="$last">, </span>
-                    </span>
-                  </td>        
-                </tr>
-              </tbody>
-            </table>
+          
+          <!-- View to Display the Resource Modification form -->
+          <div ng-view ng-init="fetchResourceWithID()"></div>
+          <div id = "ResourceList" ng-show="is_data">
+            <h2 class="text-center">List of Latest Resources</h2>
+            <div id="results" ng-show="resources != []">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <th ng-click="reverseSort = !reverseSort">ID
+                    <span class="glyphicon glyphicon-chevron-up" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-chevron-down" ng-show="reverseSort"></span>
+                  </th>
+                  <th>Title
+                    <input type="text" ng-model="searchText.title" />
+                  </th>
+                  <th>Link
+                    <input type="text" ng-model="searchText.link" />
+                  </th>
+                  <th>Description</th>
+                  <th>Tags
+                    <input type="text" ng-model="searchText.tags.tag_name" />
+                  </th>      
+                </thead>
+                <tbody>
+                  <tr ng-repeat="resource in resources | orderBy:rid:reverseSort | filter:searchText:strict">
+                    <td><a ng-bind="resource.rid" href="/#/resource/{{ resource.rid }}" /></td>
+                    <td ng-bind="resource.title"></td>
+                    <td ng-bind="resource.link"></td>
+                    <td ng-bind="resource.description"></td>
+                    <td>
+                      <span ng-repeat="tag in resource.tags">
+                        {{ tag.tag_name }}
+                        <span ng-hide="$last">, </span>
+                      </span>
+                    </td>        
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr>
           </div>
-           <hr>
-           <div id="/addresource" ng-controller="addResourceDetails as addResources">
+          <div id="/addresource" ng-controller="addResourceDetails as addResources">
             <h2 class="text-center">Add New Resources</h2>
             <form class="form-horizontal" name="addResourceForm" novalidate>
               <div class="form-group">
@@ -100,7 +102,7 @@
                 </span>
               </div>
               <div class="form-group">
-                <label>Tags </label><small>  Enter tags seperated by commas</small>
+                <label>Tags </label><small>  Press Enter to make a tag</small>
                 <tags-input ng-model="resource.tags" key-property="tag_name" display-property="tag_name"></tags-input>
               </div>
               <div class="form-group">
@@ -116,6 +118,6 @@
   </body>
   <hr>
   <footer class="text-center">
-    Designed by CuriousLearner
+    Designed by <a href="http://www.SanyamKhurana.net" target="_blank">Sanyam Khurana a.k.a. CuriousLearner</a>
   </footer>
 </html>

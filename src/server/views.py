@@ -120,6 +120,12 @@ def create_dict_for_update(JSONDoc):
 
 #######################################################################################
 #                               For Pre-flight Requests
+#           My app was working good with normal request like GET and POST,
+#           but for pre-flight requests like PUT, DELETE, from front-end, CORS error 
+#           appeared. There was a need to reply to the OPTIONS first, before the actual
+#           request and then stumbled upon this: 
+#           http://coalkids.github.io/flask-cors.html
+#                   
 #######################################################################################
 
 @app.before_request

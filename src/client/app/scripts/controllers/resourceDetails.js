@@ -16,6 +16,18 @@ app.controller('resourceDetails', function($scope, $http, $routeParams, $locatio
     console.log("Unable to get Resource");
   });
 
+  $scope.updateViewDetails = function() {
+        $(document).ready( function() {
+          $('#AlertMessage').delay(1000).fadeOut();
+          $('#ModifyResourceForm').delay(2000).fadeOut();
+          setTimeout(function () {
+              $location.path('/').replace();
+              $scope.$apply();
+              }, 2500);
+        });
+        $scope.getData();
+  }
+
   $scope.modify = function() {
     $http({
       method: 'PUT', 
@@ -29,14 +41,7 @@ app.controller('resourceDetails', function($scope, $http, $routeParams, $locatio
     }).
     success(function(data) {
       $scope.message = data[0].Message;
-      $(document).ready( function() {
-        $('#AlertMessage').delay(1000).fadeOut();
-        $('#ModifyResourceForm').delay(2000).fadeOut();
-        setTimeout(function () {
-            $location.path('/').replace();
-            $scope.$apply();
-            }, 2500);
-      });
+      $scope.updateViewDetails();
     }).
     error(function(data) {
       console.log("Unable to Modify Resource");
@@ -54,14 +59,7 @@ app.controller('resourceDetails', function($scope, $http, $routeParams, $locatio
     }).
     success(function(data) {
       $scope.message = data[0].Message;
-      $(document).ready( function() {
-        $('#AlertMessage').delay(1000).fadeOut();
-        $('#ModifyResourceForm').delay(2000).fadeOut();
-        setTimeout(function () {
-            $location.path('/');
-            $scope.$apply();
-            }, 2500);
-      });
+      $scope.updateViewDetails();
     }).
     error(function(data) {
       console.log("Unable to Delete Resource");

@@ -9,3 +9,7 @@ body {
 .error {
 	color: red;
 }
+
+footer {
+	margin-bottom: 60px;
+}
