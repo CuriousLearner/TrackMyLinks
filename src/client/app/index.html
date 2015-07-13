@@ -107,7 +107,7 @@
                 <button ng-disabled="addResourceForm.$invalid" class= "btn btn-default" type="button" ng-click="submit();reset();addResourceForm.$setPristine();">Add Resource</button>
               </div>
             </form>
-            <div><br><span ng-bind="message" ng-hide="!message" class="alert alert-info"></span><br><br></div>
+            <div><br><span id="AddResourceMessage" ng-bind="message" ng-hide="!message" class="alert alert-info"></span><br><br></div>
           </div>        
         </div>
       </div>

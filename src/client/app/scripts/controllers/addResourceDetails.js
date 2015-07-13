@@ -9,10 +9,16 @@ app.controller('addResourceDetails',function($scope, $http) {
       }).success(function(data){
         $scope.message = data.Message;
         $scope.getData();
+        $(document).ready( function() {
+          $('#AddResourceMessage').delay(1000).fadeOut();
+        });
       }).
       error(function(data){
         console.log("Unable to fetch resources");
         $scope.message = data.Error;
+        $(document).ready( function() {
+          $('#AddResourceMessage').delay(1000).fadeOut();
+        });
       });
     };
   $scope.reset = function() {

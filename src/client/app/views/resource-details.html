@@ -1,4 +1,4 @@
-<div> 
+<div id="ModifyResourceForm"> 
   <h2 class="text-center">Modify Resource with Resource ID: {{ resourceId }}</h2>
   <form class="form-horizontal" name="modifyResourceFrom" novalidate>
     <div class="form-group">
@@ -30,6 +30,6 @@
       <button ng-disabled="modifyResourceFrom.$invalid" class= "btn btn-default" type="button" ng-click="modify();reset();modifyResourceFrom.$setPristine();">Modify Resource</button>
       <button ng-disabled="modifyResourceFrom.$invalid" class= "btn btn-default" type="button" ng-click="delete();reset();modifyResourceFrom.$setPristine();">Delete Resource</button>
     </div>
-    <div><br><span ng-bind="message" ng-hide="!message" class="alert alert-info"></span><br><br></div>
+    <div><br><span id="AlertMessage" ng-bind="message" ng-hide="!message" class="alert alert-info"></span><br><br></div>
   </form>
 </div>
