@@ -1,5 +1,6 @@
 body {
   margin-top: 60px;
+  margin-bottom: 70px;
 }
 
 .nav {
@@ -10,6 +11,6 @@ body {
 	color: red;
 }
 
-footer {
+.navbar.navbar-bottom {
 	margin-bottom: 60px;
 }

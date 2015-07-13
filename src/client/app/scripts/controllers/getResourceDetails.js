@@ -3,7 +3,6 @@ app.controller('getResourceDetails',function($scope, $http) {
   $scope.reverseSort = false;
   $scope.is_data = false;
   $scope.getData = function() {
-    $scope.resources = [];
     $http({
       method: 'GET', 
       url: 'http://localhost:5000/api/resource/getresources/', 
@@ -12,6 +11,9 @@ app.controller('getResourceDetails',function($scope, $http) {
       $scope.resources = data;
       if($scope.resources.length) {
         $scope.is_data = true;
+      }
+      else {
+        $scope.is_data = false;
       }
     }).
     error(function(data){
