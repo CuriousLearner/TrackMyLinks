@@ -1,8 +1,8 @@
 app.controller('resourceDetails', function($scope, $http, $routeParams) {
   window.x = $scope;
-  $scope.resourceId = '';
   $scope.resourceId = $routeParams.resourceid;
   $scope.message = '';
+  $scope.resource = {};
   // AJAX call to fetch the given resource
   $http({
     method: 'GET', 
@@ -19,11 +19,16 @@ app.controller('resourceDetails', function($scope, $http, $routeParams) {
   $scope.modify = function() {
     $http({
       method: 'PUT', 
-      url: 'http://localhost:5000//api/resource/updateresources/' + $scope.resourceId, 
-      headers: {'Access-Control-Allow-Origin': '*'}
+      url: 'http://localhost:5000/api/resource/updateresources/' + $scope.resourceId + '/', 
+      data: $scope.resource,
+      headers: {
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': ["POST, GET, OPTIONS, DELETE, PUT"]
+      }
     }).
     success(function(data) {
-      $scope.message = data;
+      $scope.message = data[0].Message;
     }).
     error(function(data) {
       console.log("Unable to Modify Resource");
@@ -33,11 +38,14 @@ app.controller('resourceDetails', function($scope, $http, $routeParams) {
   $scope.delete = function() {
     $http({
       method: 'DELETE', 
-      url: 'http://localhost:5000//api/resource/updateresources/' + $scope.resourceId, 
-      headers: {'Access-Control-Allow-Origin': '*'}
+      url: 'http://localhost:5000/api/resource/updateresources/' + $scope.resourceId + '/', 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type':'application/json'
+      }
     }).
     success(function(data) {
-      $scope.message = data;
+      $scope.message = data[0].Message;
     }).
     error(function(data) {
       console.log("Unable to Delete Resource");

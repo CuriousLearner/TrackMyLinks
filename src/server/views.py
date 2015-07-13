@@ -8,10 +8,6 @@ import json
 result = [] # Global result list to return result as JSON
 r = Resource() # Global Instance of Resource
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/api/resource/addresources/', methods=['GET', 'POST'])
 def add_resource():
     '''
@@ -44,7 +40,6 @@ def get_resources():
 def update_or_delete_resource(resource_id):
     '''
     Depending on the request,
-    GET: Get the given resource
     PUT: Update the resource 
     or DELETE: Delete the resource
     '''
@@ -122,3 +117,49 @@ def create_dict_for_update(JSONDoc):
     for k, v in JSONDoc.iteritems():
         k = "set__" + str(k)
     return JSONDoc
+
+#######################################################################################
+#                               For Pre-flight Requests
+#######################################################################################
+
+@app.before_request
+def option_autoreply():
+    """ Always reply 200 on OPTIONS request """
+
+    if request.method == 'OPTIONS':
+        resp = app.make_default_options_response()
+
+        headers = None
+        if 'ACCESS_CONTROL_REQUEST_HEADERS' in request.headers:
+            headers = request.headers['ACCESS_CONTROL_REQUEST_HEADERS']
+
+        h = resp.headers
+
+        # Allow the origin which made the XHR
+        h['Access-Control-Allow-Origin'] = request.headers['Origin']
+        # Allow the actual method
+        h['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
+        # Allow for 10 seconds
+        h['Access-Control-Max-Age'] = "10"
+
+        h['Content-Type'] = 'application/json'
+        print("type of request" + str(type(h['Access-Control-Allow-Origin'])))
+        # We also keep current headers
+        if headers is not None:
+            h['Access-Control-Allow-Headers'] = headers
+
+        return resp
+
+
+@app.after_request
+def set_allow_origin(resp):
+    """ Set origin for GET, POST, PUT, DELETE requests """
+
+    h = resp.headers
+
+    # Allow crossdomain for other HTTP Verbs
+    if request.method != 'OPTIONS' and 'Origin' in request.headers:
+        h['Access-Control-Allow-Origin'] = request.headers['Origin']
+
+
+    return resp
