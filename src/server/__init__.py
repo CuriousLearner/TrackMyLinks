@@ -10,12 +10,12 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 db = MongoEngine()
 
 app.config['MONGODB_SETTINGS'] = {
-	'db': 'TML',
-	'host': 'localhost',
-	'port': 27017,
-	'read_preference': read_preferences.ReadPreference.PRIMARY
-	#'username': 'T@M53M7534L',
-	#'password': 'T@M53M7534L'
+    'db': 'TML',
+    'host': 'localhost',
+    'port': 27017,
+    'read_preference': read_preferences.ReadPreference.PRIMARY
+    #'username': 'T@M53M7534L',
+    #'password': 'T@M53M7534L'
 }
 
 db.init_app(app)

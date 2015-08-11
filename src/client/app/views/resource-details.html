@@ -10,8 +10,9 @@
     </div>
     <div class="form-group">
       <label>Link</label>
-      <input type="text" class="form-control" name="rlink" ng-model="resource.link" placeholder="Link to your Resource" required />
-      <span class="error" ng-hide="message || modifyResourceFrom.rlink.$pristine" ng-show="modifyResourceFrom.rlink.$dirty && modifyResourceFrom.rlink.$invalid">
+      <input type="url" class="form-control" name="rlink" ng-model="resource.link" placeholder="Link to your Resource" required />
+      <span class="error" ng-hide="message || modifyResourceFrom.rlink.$pristine" ng-show="modifyResourceFrom.rlink.$invalid">
+        <span class="error" ng-show="modifyResourceFrom.rlink.$error.url">Not valid url! (Remember to put http:// before url)</span>
         <span ng-show="modifyResourceFrom.rlink.$error.required">What is the link to your Resource?</span>
       </span>
     </div>

@@ -1,12 +1,13 @@
 from server import app, db
-from flask import (render_template, jsonify, request, redirect, url_for, 
+from flask import (render_template, jsonify, request, redirect, url_for,
                    Response, make_response)
 from models import Resource, Tags
 from operator import itemgetter
 import json
 
-result = [] # Global result list to return result as JSON
-r = Resource() # Global Instance of Resource
+result = []  # Global result list to return result as JSON
+r = Resource()  # Global Instance of Resource
+
 
 @app.route('/api/resource/addresources/', methods=['GET', 'POST'])
 def add_resource():
@@ -15,8 +16,9 @@ def add_resource():
     '''
     if request.method == 'POST':
         request_json()
-    return Response(json.dumps({"Message": "Resource Added Successfully"}, cls=PythonJSONEncoder), status=200, 
+    return Response(json.dumps({"Message": "Resource Added Successfully"}, cls=PythonJSONEncoder), status=200,
                     content_type="application/json")
+
 
 @app.route('/api/resource/getresources/')
 def get_resources():
@@ -32,11 +34,12 @@ def get_resources():
         allResources = Resource.objects.all()
         create_dict(allResources)
         result = sorted(result, key=itemgetter('rid'))
-    return Response(json.dumps(result, cls=PythonJSONEncoder), status=200, 
+    return Response(json.dumps(result, cls=PythonJSONEncoder), status=200,
                     content_type="application/json")
 
+
 @app.route('/api/resource/updateresources/<int:resource_id>/', methods=['PUT',
-                                                                     'DELETE'])
+                                                                        'DELETE'])
 def update_or_delete_resource(resource_id):
     '''
     Depending on the request,
@@ -45,17 +48,17 @@ def update_or_delete_resource(resource_id):
     '''
     global result
     allResources = Resource.objects.get(rid=resource_id)
-    if allResources: # Resource is available in DB
-        if request.method == 'PUT': # Update the resource
+    if allResources:  # Resource is available in DB
+        if request.method == 'PUT':  # Update the resource
             modified_json = create_dict_for_update(request.json)
             allResources.update(**modified_json)
-            result = [{"Message" : "Resource Updated Successfully"}]
-        if request.method == 'DELETE': # Delete the resource
+            result = [{"Message": "Resource Updated Successfully"}]
+        if request.method == 'DELETE':  # Delete the resource
             allResources.delete()
-            result = [{"Message" : "Resource Deleted Successfully"}]
+            result = [{"Message": "Resource Deleted Successfully"}]
     else:
         result = [{"Message": "Resource not found"}]
-    return Response(json.dumps(result, cls=PythonJSONEncoder), status=200, 
+    return Response(json.dumps(result, cls=PythonJSONEncoder), status=200,
                     content_type="application/json")
 
 
@@ -65,29 +68,33 @@ def not_found(error):
 
 
 class PythonJSONEncoder(json.JSONEncoder):
+
     """
     Custom JSON Encoder to encode unsupported data-types to pythonic
     representations.
     """
+
     def default(self, obj):
         if isinstance(obj, Resource):
             return obj.get_dict()
         elif isinstance(obj, Tags):
             return obj.get_dict()
         else:
-        	return repr(obj)
+            return repr(obj)
         return super(PythonJSONEncoder, self).default(obj)
+
 
 def unjsonify(dct):
     if 'rid' in dct:
-        dct['rid']=round(eval(dct['rid']), 1)
+        dct['rid'] = round(eval(dct['rid']), 1)
     return dct
 
+
 def create_dict(allResources):
-    global result # To store the result of all resources
-    result = [] # Empty for each call
+    global result  # To store the result of all resources
+    result = []  # Empty for each call
     for item in allResources:
-        d = {} # To make a dictionary for JSON Response
+        d = {}  # To make a dictionary for JSON Response
         d['rid'] = item.rid
         d['title'] = item.title
         d['link'] = item.link
@@ -96,12 +103,13 @@ def create_dict(allResources):
         result.append(d)
     return result
 
+
 def request_json(**kwargs):
     if request.json:
         global r
         r = Resource()
         for k, v in kwargs.iteritems():
-            r.rid = v # Now automatically updated
+            r.rid = v  # Now automatically updated
         r.title = request.json['title']
         r.link = str(request.json['link'])
         # Insert Tags to Tags Object
@@ -113,20 +121,22 @@ def request_json(**kwargs):
         r.description = request.json['description']
         r.save(upsert=True)
 
+
 def create_dict_for_update(JSONDoc):
     for k, v in JSONDoc.iteritems():
         k = "set__" + str(k)
     return JSONDoc
 
-#######################################################################################
+##########################################################################
 #                               For Pre-flight Requests
 #           My app was working good with normal request like GET and POST,
-#           but for pre-flight requests like PUT, DELETE, from front-end, CORS error 
+#           but for pre-flight requests like PUT, DELETE, from front-end, CORS error
 #           appeared. There was a need to reply to the OPTIONS first, before the actual
-#           request and then stumbled upon this: 
+#           request and then stumbled upon this:
 #           http://coalkids.github.io/flask-cors.html
-#                   
-#######################################################################################
+#
+##########################################################################
+
 
 @app.before_request
 def option_autoreply():
@@ -144,7 +154,8 @@ def option_autoreply():
         # Allow the origin which made the XHR
         h['Access-Control-Allow-Origin'] = request.headers['Origin']
         # Allow the actual method
-        h['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
+        h['Access-Control-Allow-Methods'] = request.headers[
+            'Access-Control-Request-Method']
         # Allow for 10 seconds
         h['Access-Control-Max-Age'] = "10"
 
@@ -166,6 +177,5 @@ def set_allow_origin(resp):
     # Allow crossdomain for other HTTP Verbs
     if request.method != 'OPTIONS' and 'Origin' in request.headers:
         h['Access-Control-Allow-Origin'] = request.headers['Origin']
-
 
     return resp

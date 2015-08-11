@@ -10,6 +10,7 @@ app.controller('addResourceDetails',function($scope, $http) {
         $scope.message = data.Message;
         $scope.getData();
         $(document).ready( function() {
+          $('#AddResourceMessage').show();
           $('#AddResourceMessage').delay(1000).fadeOut();
         });
       }).
