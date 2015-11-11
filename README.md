@@ -12,6 +12,10 @@ There are more features, I'm currently working upon. If you've some suggestion, 
 To set up this app locally, please refer to [Install Docs](https://github.com/CuriousLearner/TrackMyLinks/blob/master/docs/install.rst)
 
 ---
+## How-To
+Once you set up the app locally, you can refer to this [How To Use TrackMyLinks](https://github.com/CuriousLearner/TrackMyLinks/blob/master/docs/how-to.md) to use the app efficiently.
+
+---
 ## Tech Stack Used
 The following tech stack is used in this project:
 Python, Flask, MongoDB, HTML, CSS, JS, JQuery, BootStrap3, AngularJS
