@@ -39,3 +39,5 @@ To set up the app locally, carry out the following steps:
 You can now access the app via `localhost:8000`_ (If running SimpleHTTPServer in default configuration).
   
 .. _localhost:8000: http://localhost:8000
+
+Now you can refer to `How To Use TrackMyLinks <https://github.com/CuriousLearner/TrackMyLinks/blob/master/docs/how-to.md>`_ in order to know how to use the app.
